@@ -64,3 +64,26 @@ commands:
 docker stop "modelmesh-minio-examples"
 docker rm "modelmesh-minio-examples"
 ```
+
+
+### Wisdom Model Directory Structure
+~~~
+├── wisdom
+   └── aw_model
+       ├── added_tokens.json
+       ├── config.json
+       ├── config.yml
+       ├── merges.txt
+       ├── pytorch_model.bin
+       ├── special_tokens_map.json
+       ├── tokenizer_config.json
+       ├── tokenizer.json
+       └── vocab.json
+
+~~~
+
+### Build wisdom
+~~~
+TAG=wisdom-v2 make build-minio
+TAG=wisdom-v2 make push-minio
+~~~
