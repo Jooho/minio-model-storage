@@ -45,10 +45,10 @@ mc ls -r localminio/example-models
 
 ### Stop and remove the docker container
 
-To shut down the "modelmesh-minio-examples" docker container run the following
+To shut down the "model-minio" container run the following
 commands:
 
 ```sh
-docker stop "modelmesh-minio-examples"
-docker rm "modelmesh-minio-examples"
+podman stop "model-minio"
+podman rm "model-minio"
 ```
