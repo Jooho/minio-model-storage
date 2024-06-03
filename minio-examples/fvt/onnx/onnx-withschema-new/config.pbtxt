@@ -1,2 +1,0 @@
-backend: "onnxruntime"
-max_batch_size: 0

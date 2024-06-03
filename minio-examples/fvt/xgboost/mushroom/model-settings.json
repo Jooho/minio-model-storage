@@ -1,3 +1,0 @@
-{
-  "implementation": "mlserver_xgboost.XGBoostModel"
-}

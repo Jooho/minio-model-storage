@@ -1,7 +1,2 @@
-models/* filter=lfs diff=lfs merge=lfs -text
-Dockerfile filter=lfs diff=lfs merge=lfs -text
-hacks filter=lfs diff=lfs merge=lfs -text
-Makefile filter=lfs diff=lfs merge=lfs -text
-models filter=lfs diff=lfs merge=lfs -text
-README.md filter=lfs diff=lfs merge=lfs -text
-models/llm/models/flan-t5-small-caikit/artifacts/pytorch_model.bin filter=lfs diff=lfs merge=lfs -text
+models/** filter=lfs diff=lfs merge=lfs -text
+# models/llm/models/flan-t5-small-caikit/artifacts/pytorch_model.bin filter=lfs diff=lfs merge=lfs -text

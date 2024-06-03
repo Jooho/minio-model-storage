@@ -1,29 +1,17 @@
-# ModelMesh MinIO Examples
+# Models MinIO Examples
 
-This MinIO Docker image contains example models. When ModelMesh is deployed with
-the `--quickstart` flag, the example models are deployed via this image.
+This MinIO Docker image contains example models.
 
 ## Build the image
 
-From inside the `minio_examples` directory build the docker image:
-
 ```sh
-docker build --target minio-examples -t kserve/modelmesh-minio-examples:latest .
+make build
 ```
 
-**Note**: When ModelMesh is deployed with the `--fvt` flag then the `modelmesh-minio-dev-examples`
-image will be deployed instead. To build it, run the docker build command with the
-`minio-fvt` target:
-
-```sh
-docker build --target minio-fvt -t kserve/modelmesh-minio-dev-examples:latest .
-```
-
-Push the newly built images to DockerHub:
+## Push the image
 
 ```shell
-docker push kserve/modelmesh-minio-examples:latest
-docker push kserve/modelmesh-minio-dev-examples:latest
+make push
 ```
 
 ## Start the container
@@ -31,28 +19,28 @@ docker push kserve/modelmesh-minio-dev-examples:latest
 Start a "modelmesh-minio-examples" container:
 
 ```sh
-docker run --rm --name "modelmesh-minio-examples" \
+podman run --rm --name "model-minio" \
   -u "1000" \
   -p "9000:9000" \
-  -e "MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE" \
-  -e "MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" \
-  kserve/modelmesh-minio-examples:latest server /data1
+  -p "9001:9001" \
+  -e "MINIO_ACCESS_KEY=admin" \
+  -e "MINIO_SECRET_KEY=password" \
+  quay.io/jooholee/models-minio:latest server /data1
 ```
 
 ## Test the image using the MinIO client
-
 Install the [MinIO client](https://min.io/docs/minio/linux/reference/minio-mc.html#quickstart), `mc`.
 
 Create an alias `localminio` for an local instance:
 
 ```sh
-mc alias set localminio http://localhost:9000 AKIAIOSFODNN7EXAMPLE wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+mc alias set localminio http://localhost:9000 admin password
 ```
 
 List objects in the instance's bucket:
 
 ```sh
-mc ls -r localminio/modelmesh-example-models/
+mc ls -r localminio/example-models
 ```
 
 ### Stop and remove the docker container
@@ -64,26 +52,3 @@ commands:
 docker stop "modelmesh-minio-examples"
 docker rm "modelmesh-minio-examples"
 ```
-
-
-### Wisdom Model Directory Structure
-~~~
-├── wisdom
-   └── aw_model
-       ├── added_tokens.json
-       ├── config.json
-       ├── config.yml
-       ├── merges.txt
-       ├── pytorch_model.bin
-       ├── special_tokens_map.json
-       ├── tokenizer_config.json
-       ├── tokenizer.json
-       └── vocab.json
-
-~~~
-
-### Build wisdom
-~~~
-TAG=wisdom-v2 make build-minio
-TAG=wisdom-v2 make push-minio
-~~~
