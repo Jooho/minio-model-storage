@@ -53,14 +53,3 @@ podman stop "model-minio"
 podman rm "model-minio"
 ```
 
-
-## Models
-### openvino
-
-
-
-~~~
-python setup.py sdist bdist_wheel
-python -m twine upload dist/loopy_auto-0.0.1-py3-none-any.whl 
-
-~~~
