@@ -26,13 +26,13 @@ make push
 Start a "modelmesh-minio-examples" container:
 
 ```sh
-podman run --rm --name "model-minio" \
+podman run --privileged --rm --name "model-minio" \
   -u "1000" \
   -p "9000:9000" \
   -p "9001:9001" \
-  -e "MINIO_ACCESS_KEY=admin" \
-  -e "MINIO_SECRET_KEY=password" \
-  quay.io/jooholee/models-minio:latest server /data1
+  -e "MINIO_ROOT_USER=admin" \
+  -e "MINIO_ROOT_PASSWORD=password" \
+  quay.io/jooholee/model-minio:latest server /data1
 ```
 
 ## Test the image using the MinIO client
