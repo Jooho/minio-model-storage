@@ -1,0 +1,31 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  annotations:
+    openshift.io/display-name: openvino
+    networking.kserve.io/visibility: "exposed"
+  labels:
+    opendatahub.io/dashboard: "true"
+    serving.kserve.io/autoscalerClass: "external"
+  name: openvino
+  namespace: openvino-test
+spec:
+  predictor:
+    maxReplicas: 1
+    minReplicas: 1
+    model:
+      modelFormat:
+        name: onnx
+        version: "1"
+      name: ""
+      resources:
+        limits:
+          cpu: "2"
+          memory: 8Gi
+        requests:
+          cpu: "1"
+          memory: 4Gi
+      runtime: kserve-ovms
+      storage:
+        key: aws-connection-minio
+        path: kserve/openvino-age-gender-recognition

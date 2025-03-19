@@ -21,8 +21,8 @@ This model inference age and gender.
 **0.Clone repo**
 
 ~~~
-git clone https://github.com/Jooho/AIML_sandbox
-cd AIML_sandbox/minio-examples/docs/openvino/age-gender-reconition
+git clone https://github.com/Jooho/minio-model-storage
+cd docs/openvino/age-gender-reconition
 ~~~
 
 **1.Setup loopy**
@@ -39,6 +39,7 @@ loopy roles run minio-deploy -i cluster_info.sh
 
 ~~~
 oc new-project openvino-test
+
 # With these label, you can see this namespace with ODH dashboard
 oc label ns/openvino-test modelmesh-enabled="false"   opendatahub.io/dashboard="true"
 
@@ -46,19 +47,25 @@ oc process -n opendatahub kserve-ovms |oc create -n openvino-test -f -
 
 oc create -f ./data-connection.yaml
 
-oc create -f ./ksvc/isvc.yaml
+oc create -f ./raw_isvc.yaml
+#oc create -f ./serverless_isvc.yaml   #use this if you are using serverless mode
 
-pip install -r requirements.txt
+pip install -r ../requirements.txt
 ~~~
 
 **4.Check input format**
 ~~~
 # using port-forward
 oc project openvino-test
-oc port-forward deployment/openvino-predictor-00001-deployment 8888:8888 &
-curl http://localhost:8888/v2/models/openvino
-# using route
-#curl -k https://openvino-test$OPENSHIFT_DOMAIN/v2/models/openvino
+
+# using external route
+export ROUTE_URL=$(oc get isvc openvino -o jsonpath='{.status.url}')
+curl -k "${ROUTE_URL}/v2/models/openvino"
+
+# using port-forward
+#oc port-forward deployment/openvino-predictor-00001-deployment 8888:8888 &
+#curl http://localhost:8888/v2/models/openvino
+
 
 {"name":"openvino","versions":["1"],"platform":"OpenVINO","inputs":[{"name":"data","datatype":"FP32","shape":[1,3,62,62]}],"outputs":[{"name":"age_conv3","datatype":"FP32","shape":[1,1,1,1]},{"name":"prob","datatype":"FP32","shape":[1,2,1,1]}]}
 ~~~
@@ -70,11 +77,11 @@ python ./convert_image.py
 
 **6.Send input data**
 ~~~
-curl -XPOST -d @age_gender_recognition_input_request.json  http://localhost:8888/v2/models/openvino/infer
+# using external route
+curl -XPOST -d @age_gender_recognition_input_request.json   -k "$ROUTE_URL/v2/models/openvino/infer"
 
-# using route
-# curl -XPOST -d @updated_request.json -k https://openvino-test.$OPENSHIFT_DOMAIN/v2/models/openvino/infer
-
+# using port-forward
+#curl -XPOST -d @age_gender_recognition_input_request.json  http://localhost:8888/v2/models/openvino/infer
 ~~~
 
 **Output**

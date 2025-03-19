@@ -9,6 +9,7 @@ metadata:
   labels:
     opendatahub.io/dashboard: "true"
   name: openvino
+  namespace: openvino-test
 spec:
   predictor:
     maxReplicas: 1
