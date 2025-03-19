@@ -32,7 +32,7 @@ podman run --privileged --rm --name "model-minio" \
   -p "9001:9001" \
   -e "MINIO_ROOT_USER=admin" \
   -e "MINIO_ROOT_PASSWORD=password" \
-  quay.io/jooholee/model-minio:latest server /data1
+  quay.io/jooholee/model-minio:latest server --console-address=":9001" /data1
 ```
 
 ## Test the image using the MinIO client
