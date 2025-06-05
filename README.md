@@ -11,6 +11,14 @@ git lfs install
 
 ## Build the image
 
+**Pre-requirement**
+You should copy models to the right directories.
+```
+kserve/model models  --> models/serving
+ods-ci-s3 models     --> models/ods-ci-s3
+ods-ci-wisdom models --> models/ods-ci-wisdom
+```
+**Build**
 ```sh
 make build
 ```
@@ -23,7 +31,7 @@ make push
 
 ## Start the container
 
-Start a "modelmesh-minio-examples" container:
+Start a "model-minio" container:
 
 ```sh
 podman run --privileged --rm --name "model-minio" \

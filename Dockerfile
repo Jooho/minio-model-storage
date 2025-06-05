@@ -12,7 +12,7 @@ RUN microdnf install -y shadow-utils && \
     microdnf clean all
 
 # Create final image combining minio and user setup
-FROM quay.io/minio/minio:latest
+FROM quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
 
 # Copy user and permission setup from runtime
 COPY --from=runtime /etc/passwd /etc/passwd
