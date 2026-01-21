@@ -1,5 +1,5 @@
-# Models MinIO Examples
-This provides MinIO-based model storage docker image contains example models. Loopy use this repository to deploy sample models most times.
+# Models Seaweedfs Examples
+This provides Seaweedfs-based model storage docker image contains example models. Loopy use this repository to deploy sample models most times.
 To use this repo, you need to use `git lfs`
 
 ## Pre requirement
@@ -21,50 +21,59 @@ ods-ci-wisdom models --> models/ods-ci-wisdom
 **Build**
 ```sh
 make build
+#or
+make build-all
 ```
 
 ## Push the image
 
 ```shell
 make push
+#or
+make build-all
 ```
 
 ## Start the container
 
-Start a "model-minio" container:
+Start a "model-seaweedfs" container:
 
 ```sh
-podman run --privileged --rm --name "model-minio" \
+podman run --privileged --rm --name "model-seaweedfs" \
   -u "1000" \
-  -p "9000:9000" \
-  -p "9001:9001" \
-  -e "MINIO_ROOT_USER=admin" \
-  -e "MINIO_ROOT_PASSWORD=password" \
-  quay.io/jooholee/model-minio:latest server --console-address=":9001" /data1
+  -e "AWS_ACCESS_KEY_ID=admin" \
+  -e "AWS_SECRET_ACCESS_KEY=admin" \
+  quay.io/jooholee/model-seaweedfs:latest server mini -s3
 ```
 
-## Test the image using the MinIO client
-Install the [MinIO client](https://min.io/docs/minio/linux/reference/minio-mc.html#quickstart), `mc`.
+## Test the image using the aws client
+Install the aws client.
+```
+sudo dnf install -y aws
+```
 
-Create an alias `localminio` for an local instance:
+Export required env variables for an local instance:
 
 ```sh
-mc alias set localminio http://localhost:9000 admin password
+export AWS_ACCESS_KEY_ID="admin" 
+export AWS_SECRET_ACCESS_KEY="admin" 
+export AWS_DEFAULT_REGION="us-east-1"
+export AWS_ENDPOINT_URL_S3="http://localhost:8333"
+
 ```
 
 List objects in the instance's bucket:
 
 ```sh
-mc ls -r localminio/example-models
+aws s3 ls s3://example-models
 ```
 
 ### Stop and remove the docker container
 
-To shut down the "model-minio" container run the following
+To shut down the "model-seaweedfs" container run the following
 commands:
 
 ```sh
-podman stop "model-minio"
-podman rm "model-minio"
+podman stop "model-seaweedfs"
+podman rm "model-seaweedfs"
 ```
 

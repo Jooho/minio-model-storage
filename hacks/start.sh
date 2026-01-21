@@ -1,5 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 
-cp -R /data_tmp/* /data1
+cp -R /data1/* /data
 
-minio $@
+weed $@
