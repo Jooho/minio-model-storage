@@ -4,13 +4,6 @@ metadata:
   name: seaweedfs
   namespace: seaweedfs
 spec:
-  clusterIP: 10.96.223.25
-  clusterIPs:
-  - 10.96.223.25
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-  - IPv4
-  ipFamilyPolicy: SingleStack
   ports:
   - name: master-ui
     port: 9333
@@ -34,5 +27,3 @@ spec:
     targetPort: 23646
   selector:
     app: seaweedfs
-  sessionAffinity: None
-  type: ClusterIP
